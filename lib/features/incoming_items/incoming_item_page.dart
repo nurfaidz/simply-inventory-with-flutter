@@ -53,6 +53,7 @@ class IncomingItemPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final incoming_item = incoming_items[index];
               return _buildIncomingCard(
+                context: context,
                 name: incoming_item['name']!,
                 quantity: incoming_item['quantity']!,
                 total: incoming_item['total']!,
@@ -65,7 +66,9 @@ class IncomingItemPage extends StatelessWidget {
   }
 
   Widget _buildIncomingCard(
-      {required String name,
+      {
+        required BuildContext context,
+        required String name,
       required String quantity,
       required String total,
       required String date,
@@ -89,7 +92,7 @@ class IncomingItemPage extends StatelessWidget {
           ],
         ),
         onTap: () {
-          print('Tapped $name');
+          Navigator.pushNamed(context, '/incoming-items/show');
         },
       ),
     );

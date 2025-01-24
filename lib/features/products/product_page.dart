@@ -42,6 +42,7 @@ class ProductPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final product = products[index];
               return _buildProductCard(
+                context: context,
                 name: product['name']!,
                 price: product['price']!,
                 imageUrl: product['image']!,
@@ -52,7 +53,7 @@ class ProductPage extends StatelessWidget {
   }
 
   Widget _buildProductCard(
-      {required String name, required String price, required String imageUrl}) {
+      {required BuildContext context, required String name, required String price, required String imageUrl}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -74,7 +75,10 @@ class ProductPage extends StatelessWidget {
         subtitle: Text(price, style: const TextStyle(color: Colors.grey)),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: () {
-          print('Tapped $name');
+          Navigator.pushNamed(
+            context,
+            '/products/show',
+          );
         },
       ),
     );

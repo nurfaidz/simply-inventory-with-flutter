@@ -52,6 +52,7 @@ class OutgoingItemPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final outgoing_item = outgoing_items[index];
               return _buildOutgoingCard(
+                context: context,
                 name: outgoing_item['name']!,
                 quantity: outgoing_item['quantity']!,
                 total: outgoing_item['total']!,
@@ -64,7 +65,7 @@ class OutgoingItemPage extends StatelessWidget {
     );
   }
 
-  Widget _buildOutgoingCard({required String name, required String quantity, required String total, required String date, required String status}) {
+  Widget _buildOutgoingCard({required BuildContext context, required String name, required String quantity, required String total, required String date, required String status}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -84,7 +85,10 @@ class OutgoingItemPage extends StatelessWidget {
           ],
         ),
         onTap: () {
-          print('Tapped $name');
+          Navigator.pushNamed(
+            context,
+            '/outgoing-items/show',
+          );
         },
       ),
     );
