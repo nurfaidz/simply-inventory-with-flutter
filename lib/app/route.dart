@@ -7,6 +7,7 @@ import '../features/incoming_items/incoming_item_page.dart';
 import '../features/incoming_items/create_incoming_item_page.dart';
 import '../features/incoming_items/detail_incoming_item_page.dart';
 import '../features/outgoing_items/outgoing_item_page.dart';
+import '../features/outgoing_items/create_outgoing_item_page.dart';
 import '../features/outgoing_items/detail_outgoing_item_page.dart';
 import '../features/auths/login_page.dart';
 
@@ -26,6 +27,7 @@ class AppRoutes {
 
         // Outgoing Item
         '/outgoing-items': (context) => const OutgoingItemPage(),
+        '/outgoing-items/create': (context) => const CreateOutgoingItemPage(),
         '/outgoing-items/show': (context) => const DetailOutgoingItemPage(),
 
         '/login': (context) => const LoginPage(),
