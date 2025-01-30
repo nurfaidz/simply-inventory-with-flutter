@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../features/homes/home_page.dart';
 import '../features/products/product_page.dart';
+import '../features/products/create_product_page.dart';
 import '../features/products/product_detail_page.dart';
 import '../features/incoming_items/incoming_item_page.dart';
 import '../features/incoming_items/create_incoming_item_page.dart';
@@ -15,6 +16,7 @@ class AppRoutes {
 
         // Product
         '/products': (context) => const ProductPage(),
+        '/products/create': (context) => const CreateProductPage(),
         '/products/show': (context) => const ProductDetailPage(),
 
         // Incoming Item
