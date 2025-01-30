@@ -49,7 +49,11 @@ class ProductPage extends StatelessWidget {
               );
             },
           ),
-        ));
+        ),
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        Navigator.pushNamed(context, '/products/create');
+      }, child: const Icon(Icons.add),),
+    );
   }
 
   Widget _buildProductCard(

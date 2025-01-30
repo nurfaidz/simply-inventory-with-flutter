@@ -61,7 +61,13 @@ class OutgoingItemPage extends StatelessWidget {
               );
             },
         ),
-      )
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/outgoing-items/create');
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 

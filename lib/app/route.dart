@@ -3,6 +3,7 @@ import '../features/homes/home_page.dart';
 import '../features/products/product_page.dart';
 import '../features/products/product_detail_page.dart';
 import '../features/incoming_items/incoming_item_page.dart';
+import '../features/incoming_items/create_incoming_item_page.dart';
 import '../features/incoming_items/detail_incoming_item_page.dart';
 import '../features/outgoing_items/outgoing_item_page.dart';
 import '../features/outgoing_items/detail_outgoing_item_page.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
 
         // Incoming Item
         '/incoming-items': (context) => const IncomingItemPage(),
+        '/incoming-items/create': (context) => const CreateIncomingItemPage(),
         '/incoming-items/show': (context) => const DetailIncomingItemPage(),
 
         // Outgoing Item
