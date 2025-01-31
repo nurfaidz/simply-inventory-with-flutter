@@ -21,5 +21,7 @@ class IncomingItemService {
   }
 
   Future<Response> deleteIncomingItem(String token, String incomingItemId) async {
-    return await _dio.delete('/incoming-items/$incomingItemId', options: Options(headers: {'Authorization': 'Bearer $token'}));
+    return await _dio.delete('/incoming-items/$incomingItemId',
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
+  }
 }
