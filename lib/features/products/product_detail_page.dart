@@ -72,23 +72,23 @@ void _showDeleteDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Delete Product'),
-      content: const Text('Are you sure want to delete this product?'),
+      title: const Text('Hapus Produk'),
+      content: const Text('Apakah Anda yakin ingin menghapus produk ini?'),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
+          child: const Text('Batal'),
         ),
         TextButton(
           onPressed: () {
               Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Product has been deleted'),
+                content: Text('Produk telah dihapus'),
               ),
             );
           },
-          child: const Text('Delete', style: TextStyle(color: Colors.red)),
+          child: const Text('Hapus', style: TextStyle(color: Colors.red)),
         )
       ],
     )

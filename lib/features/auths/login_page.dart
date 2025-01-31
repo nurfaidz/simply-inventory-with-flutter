@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 TextButton(onPressed: () {
                   Navigator.pushNamed(context, '/registration');
-                }, child: const Text('Create an account', style: TextStyle(color: Colors.blue),),)
+                }, child: const Text('Belum punya akun? Daftar disini', style: TextStyle(color: Colors.blue))),
               ],
             )
         )

@@ -47,7 +47,7 @@ class RegistrationPage extends StatelessWidget {
             const SizedBox(height: 16),
             TextButton(onPressed: () {
               Navigator.pushNamed(context, '/login');
-              }, child: const Text('Already have an account? Login here', style: TextStyle(color: Colors.blue),),)
+              }, child: const Text('Sudah punya akun? Login disini', style: TextStyle(color: Colors.blue)),)
           ],
         ),
       ),
