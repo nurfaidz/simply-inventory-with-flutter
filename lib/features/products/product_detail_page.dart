@@ -50,10 +50,47 @@ class ProductDetailPage extends StatelessWidget {
             const Spacer(),
             SizedBox(
               width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showDeleteDialog(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                child: const Text('Hapus Produk', style: TextStyle(fontSize: 16, color: Colors.white)),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+void _showDeleteDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Delete Product'),
+      content: const Text('Are you sure want to delete this product?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () {
+              Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Product has been deleted'),
+              ),
+            );
+          },
+          child: const Text('Delete', style: TextStyle(color: Colors.red)),
+        )
+      ],
+    )
+  );
 }
