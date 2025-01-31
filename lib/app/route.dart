@@ -10,6 +10,7 @@ import '../features/outgoing_items/outgoing_item_page.dart';
 import '../features/outgoing_items/create_outgoing_item_page.dart';
 import '../features/outgoing_items/detail_outgoing_item_page.dart';
 import '../features/auths/login_page.dart';
+import '../features/auths/registration_page.dart';
 
 class AppRoutes {
   static Map<String, WidgetBuilder> get routes => {
@@ -31,5 +32,6 @@ class AppRoutes {
         '/outgoing-items/show': (context) => const DetailOutgoingItemPage(),
 
         '/login': (context) => const LoginPage(),
+        '/registration': (context) => const RegistrationPage(),
       };
 }

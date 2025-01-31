@@ -39,7 +39,11 @@ class LoginPage extends StatelessWidget {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   child: const Text('Login'),
-                )
+                ),
+                const SizedBox(height: 16),
+                TextButton(onPressed: () {
+                  Navigator.pushNamed(context, '/registration');
+                }, child: const Text('Create an account', style: TextStyle(color: Colors.blue),),)
               ],
             )
         )
