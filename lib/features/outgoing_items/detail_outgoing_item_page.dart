@@ -56,11 +56,45 @@ class DetailOutgoingItemPage extends StatelessWidget {
 
             SizedBox(
               width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  _showDeleteDialog(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: const EdgeInsets.symmetric(vertical: 14)
+                ),
+                child: const Text('Hapus Barang Keluar', style: TextStyle(fontSize: 16, color: Colors.white)),
+              ),
             ),
           ],
         ),
       ),
     );
   }
+}
 
+void _showDeleteDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+    title: const Text('Hapus Barang Keluar'),
+    content: const Text('Apakah Anda yakin ingin menghapus barang keluar ini?'),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context),
+        child: const Text('Batal'),
+      ),
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Barang keluar telah dihapus')),
+          );
+        },
+        child: const Text('Hapus', style: TextStyle(color: Colors.red)),
+      ),
+    ],
+  )
+  );
 }
