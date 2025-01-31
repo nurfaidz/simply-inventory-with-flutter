@@ -10,7 +10,7 @@ class IncomingItemProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  Future<void> fetchIncomingItems(String token) async {
+  Future<void> getIncomingItems(String token) async {
     _isLoading = true;
     notifyListeners();
 
@@ -24,8 +24,7 @@ class IncomingItemProvider with ChangeNotifier {
     }
   }
 
-  Future<void> fetchIncomingItemById(
-      String token, String incomingItemId) async {
+  Future<void> getIncomingItemById(String token, String incomingItemId) async {
     try {
       final response =
           await _incomingItemService.getIncomingItemById(token, incomingItemId);
@@ -70,13 +69,10 @@ class IncomingItemProvider with ChangeNotifier {
 
   Future<void> deleteIncomingItem(String token, String incomingItemId) async {
     try {
-      final response =
-          await _incomingItemService.deleteIncomingItem(token, incomingItemId);
-      if (response.statusCode == 200) {
-        _incomingItems.removeWhere(
-            (incomingItem) => incomingItem['_id'] == incomingItemId);
-        notifyListeners();
-      }
+      await _incomingItemService.deleteIncomingItem(token, incomingItemId);
+      _incomingItems
+          .removeWhere((incomingItem) => incomingItem['_id'] == incomingItemId);
+      notifyListeners();
     } catch (e) {
       print('Error deleting incoming item: $e');
     }

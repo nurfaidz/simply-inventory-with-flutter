@@ -10,7 +10,7 @@ class ProductProvider with ChangeNotifier {
   List<dynamic> get products => _products;
   bool get isLoading => _isLoading;
 
-  Future<void> fetchProducts(String token) async {
+  Future<void> getProducts(String token) async {
     _isLoading = true;
     notifyListeners();
 
@@ -27,7 +27,7 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addProduct(String token, Map<String, dynamic> productData) async {
+  Future<void> createProduct(String token, Map<String, dynamic> productData) async {
     try {
       final response = await _productService.createProduct(token, productData);
       if (response.statusCode == 201) {
