@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory_app/features/screens/profile_page.dart';
 import '../features/homes/home_page.dart';
 import '../features/products/product_page.dart';
 import '../features/products/create_product_page.dart';
@@ -31,7 +32,11 @@ class AppRoutes {
         '/outgoing-items/create': (context) => const CreateOutgoingItemPage(),
         '/outgoing-items/show': (context) => const DetailOutgoingItemPage(),
 
+        // Auth
         '/login': (context) => const LoginPage(),
         '/registration': (context) => const RegistrationPage(),
+
+        // Profile
+        '/profile': (context) => const ProfilePage(),
       };
 }
