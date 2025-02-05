@@ -4,11 +4,22 @@ import '../api/api_client.dart';
 class ProductService {
   final Dio _dio = ApiClient.getDio();
 
-  Future<Response> getProducts(String token) async {
-    return await _dio.get('/products',
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-        }));
+  Future<List<dynamic>> getProducts(String token) async {
+    try {
+      final response = await _dio.get('/products',
+          options: Options(headers: {
+            'Authorization' : 'Bearer $token',
+          }));
+
+      if (response.statusCode == 200) {
+        print("Data products: ${response.data}");
+        return response.data;
+      }
+    } catch(e) {
+      print("Error fetching products: $e");
+    }
+
+    return [];
   }
 
   Future<Response> getProductById(String token, String productId) async {

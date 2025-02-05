@@ -15,10 +15,9 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _productService.getProducts(token);
-      if (response.statusCode == 200) {
-        _products = response.data;
-      }
+      final List<dynamic> response = await _productService.getProducts(token);
+      print("Products: $response");
+      _products = response;
     } catch(e) {
       print("Error fetching products: $e");
     }
