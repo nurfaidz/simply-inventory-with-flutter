@@ -42,7 +42,7 @@ class _ProductPageState extends State<ProductPage> {
               itemCount: productProvider.products.length,
               itemBuilder: (context, index) {
                 final product = productProvider.products[index];
-                return _buildProductCard(context: context, name: product['name'] ?? '-', stock: product['stock'], imageUrl: product['image_url'] ?? 'https://fakeimg.pl/150');
+                return _buildProductCard(context: context, productId:product['id'], name: product['name'] ?? '-', stock: product['stock'], imageUrl: product['image_url'] ?? 'https://fakeimg.pl/150');
               },
             );
           },
@@ -59,6 +59,7 @@ class _ProductPageState extends State<ProductPage> {
 
   Widget _buildProductCard(
       {required BuildContext context,
+      required int productId,
       required String name,
       required int stock,
       required String imageUrl}) {
@@ -86,6 +87,10 @@ class _ProductPageState extends State<ProductPage> {
           Navigator.pushNamed(
             context,
             '/products/show',
+            arguments: {
+              'productId': productId,
+              'token': Provider.of<AuthProvider>(context, listen: false).token,
+            }
           );
         },
       ),

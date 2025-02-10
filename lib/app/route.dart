@@ -20,7 +20,10 @@ class AppRoutes {
         // Product
         '/products': (context) => const ProductPage(),
         '/products/create': (context) => const CreateProductPage(),
-        '/products/show': (context) => const ProductDetailPage(),
+        '/products/show': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              return ProductDetailPage(productId: args['productId'].toString(), token: args['token'] as String);
+        },
 
         // Incoming Item
         '/incoming-items': (context) => const IncomingItemPage(),

@@ -22,11 +22,21 @@ class ProductService {
     return [];
   }
 
-  Future<Response> getProductById(String token, String productId) async {
-    return await _dio.get('/products/$productId',
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-        }));
+  Future<Map<String, dynamic>?> getProductById(String token, String productId) async {
+    try {
+      final response = await _dio.get('/products/$productId', options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+
+      if (response.statusCode == 200) {
+        print("Data product: ${response.data}");
+        return response.data as Map<String, dynamic>;
+      }
+    } catch (e) {
+      print("Error fetching product: $e");
+    }
+
+    return null;
   }
 
   Future<Response> createProduct(

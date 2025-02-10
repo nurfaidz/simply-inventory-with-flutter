@@ -5,9 +5,11 @@ class ProductProvider with ChangeNotifier {
   final ProductService _productService = ProductService();
 
   List<dynamic> _products = [];
+  Map<String, dynamic>? _productDetail;
   bool _isLoading = false;
 
   List<dynamic> get products => _products;
+  Map<String, dynamic>? get productDetail => _productDetail;
   bool get isLoading => _isLoading;
 
   Future<void> getProducts(String token) async {
@@ -20,6 +22,26 @@ class ProductProvider with ChangeNotifier {
       _products = response;
     } catch(e) {
       print("Error fetching products: $e");
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> getProductById(String token, String productId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final response = await _productService.getProductById(token, productId);
+      if (response != null) {
+        _productDetail = response;
+      } else {
+        _productDetail = null;
+      }
+    } catch(e) {
+      print("Error fetching product: $e");
+      _productDetail = null;
     }
 
     _isLoading = false;
