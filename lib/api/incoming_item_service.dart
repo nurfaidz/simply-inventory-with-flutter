@@ -4,8 +4,22 @@ import '../api/api_client.dart';
 class IncomingItemService {
   final Dio _dio = ApiClient.getDio();
 
-  Future<Response> getIncomingItems(String token) async {
-    return await _dio.get('/incoming-items', options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<List<dynamic>> getIncomingItems(String token) async {
+    try {
+      final response = await _dio.get('/incoming-items',
+      options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+
+      if (response.statusCode == 200) {
+        print("Data incoming items: ${response.data}");
+        return response.data;
+      }
+    } catch (e) {
+      print("Error fetching incoming items: $e");
+    }
+
+    return [];
   }
 
   Future<Response> getIncomingItemById(String token, String incomingItemId) async {

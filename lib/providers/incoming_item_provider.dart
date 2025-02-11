@@ -3,10 +3,13 @@ import '../api/incoming_item_service.dart';
 
 class IncomingItemProvider with ChangeNotifier {
   final IncomingItemService _incomingItemService = IncomingItemService();
+
+  Map<String, dynamic>? _incomingItemDetail;
   List<dynamic> _incomingItems = [];
   bool _isLoading = false;
 
   List<dynamic> get incomingItems => _incomingItems;
+  Map<String, dynamic>? get incomingItemDetail => _incomingItemDetail;
 
   bool get isLoading => _isLoading;
 
@@ -15,13 +18,16 @@ class IncomingItemProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _incomingItemService.getIncomingItems(token);
-      if (response.statusCode == 200) {
-        _incomingItems = response.data;
-      }
+      final List<dynamic> response =
+          await _incomingItemService.getIncomingItems(token);
+      print("Incoming items: $response");
+      _incomingItems = response;
     } catch (e) {
       print('Error fetching incoming items: $e');
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> getIncomingItemById(String token, String incomingItemId) async {

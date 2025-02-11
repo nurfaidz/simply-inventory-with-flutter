@@ -1,45 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory_app/providers/auth_provider.dart';
+import 'package:flutter_inventory_app/providers/incoming_item_provider.dart';
+import 'package:provider/provider.dart';
 
-class IncomingItemPage extends StatelessWidget {
+class IncomingItemPage extends StatefulWidget {
   const IncomingItemPage({super.key});
 
-  final List<Map<String, String>> incoming_items = const [
-    {
-      'name': 'Barang Masuk 1',
-      'quantity': '10',
-      'total': 'Rp 1.000.000',
-      'date': '2021-10-10',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Masuk 2',
-      'quantity': '20',
-      'total': 'Rp 2.000.000',
-      'date': '2021-10-11',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Masuk 3',
-      'quantity': '30',
-      'total': 'Rp 3.000.000',
-      'date': '2021-10-12',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Masuk 4',
-      'quantity': '40',
-      'total': 'Rp 4.000.000',
-      'date': '2021-10-13',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Masuk 5',
-      'quantity': '50',
-      'total': 'Rp 5.000.000',
-      'date': '2021-10-14',
-      'status': 'Diterima',
-    },
-  ];
+  @override
+  _IncomingItemPageState createState() => _IncomingItemPageState();
+}
+
+class _IncomingItemPageState extends State<IncomingItemPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final incomingItemProvider = Provider.of<IncomingItemProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String token = authProvider.token!;
+      incomingItemProvider.getIncomingItems(token);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +28,32 @@ class IncomingItemPage extends StatelessWidget {
         appBar:
             AppBar(title: const Text('Daftar Barang Masuk'), centerTitle: true),
         body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: ListView.builder(
-            itemCount: incoming_items.length,
-            itemBuilder: (context, index) {
-              final incoming_item = incoming_items[index];
-              return _buildIncomingCard(
-                context: context,
-                name: incoming_item['name']!,
-                quantity: incoming_item['quantity']!,
-                total: incoming_item['total']!,
-                date: incoming_item['date']!,
-                status: incoming_item['status']!,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Consumer<IncomingItemProvider>(
+            builder: (context, incomingItemProvider, _) {
+              if (incomingItemProvider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (incomingItemProvider.incomingItems.isEmpty) {
+                return const Center(child: Text('Belum ada barang masuk'));
+              }
+
+              return ListView.builder(
+                itemCount: incomingItemProvider.incomingItems.length,
+                itemBuilder: (context, index) {
+                  final incomingItem = incomingItemProvider.incomingItems[index];
+                  return _buildIncomingCard(
+                    context: context,
+                    incomingItemId: incomingItem['id'],
+                    name: incomingItem['products']['name'] ?? '-',
+                    quantity: incomingItem['qty'],
+                    date: incomingItem['incoming_at'],
+                  );
+                },
               );
-            },
+            }
+
           ),
         ),
       floatingActionButton: FloatingActionButton(onPressed: () {
@@ -72,11 +65,11 @@ class IncomingItemPage extends StatelessWidget {
   Widget _buildIncomingCard(
       {
         required BuildContext context,
+        required int incomingItemId,
         required String name,
-      required String quantity,
-      required String total,
-      required String date,
-      required String status}) {
+      required int quantity,
+      // required String total,
+      required String date}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -86,13 +79,13 @@ class IncomingItemPage extends StatelessWidget {
           name,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(total, style: const TextStyle(color: Colors.grey)),
+        subtitle: Text('Jumlah: $quantity', style: const TextStyle(color: Colors.grey)),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(date, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 4),
-            Text(status, style: const TextStyle(color: Colors.green)),
+            Text('Diterima', style: const TextStyle(color: Colors.green)),
           ],
         ),
         onTap: () {
