@@ -41,9 +41,15 @@ class ProductService {
 
   Future<Response> createProduct(
       String token, Map<String, dynamic> productData) async {
-    return await _dio.post('/products/',
-        data: productData,
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    try {
+      return await _dio.post('/products/', data: productData, options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+    } catch (e) {
+      print("Error adding product: $e");
+    }
+
+    return Response(requestOptions: RequestOptions(path: ''));
   }
 
   Future<Response> updateProduct(

@@ -48,16 +48,18 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createProduct(String token, Map<String, dynamic> productData) async {
+  Future<bool> createProduct(String token, Map<String, dynamic> productData) async {
     try {
       final response = await _productService.createProduct(token, productData);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         _products.add(response.data);
         notifyListeners();
+        return true;
       }
     } catch(e) {
       print("Error adding product: $e");
     }
+    return false;
   }
 
   Future<void> updateProduct(String token, String productId, Map<String, dynamic> productData) async {
