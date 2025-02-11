@@ -22,8 +22,21 @@ class IncomingItemService {
     return [];
   }
 
-  Future<Response> getIncomingItemById(String token, String incomingItemId) async {
-    return await _dio.get('/incoming-items/$incomingItemId', options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<Map<String, dynamic>?> getIncomingItemById(String token, String incomingItemId) async {
+    try {
+      final response = await _dio.get('/incoming-items/$incomingItemId', options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+
+      if (response.statusCode == 200) {
+        print("Data incoming item: ${response.data}");
+        return response.data as Map<String,dynamic>;
+      }
+    } catch (e) {
+      print("Error fetching incoming item by id: $e");
+    }
+
+    return null;
   }
 
   Future<Response> createIncomingItem(String token, Map<String, dynamic> data) async {

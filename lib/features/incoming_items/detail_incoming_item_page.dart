@@ -1,71 +1,84 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory_app/providers/incoming_item_provider.dart';
+import 'package:provider/provider.dart';
 
 class DetailIncomingItemPage extends StatelessWidget {
-  const DetailIncomingItemPage({super.key});
+  final String incomingItemId;
+  final String token;
 
-  final incoming_item = const {
-    'name': 'Barang Masuk 1',
-    'quantity': '10',
-    'total': 'Rp 1.000.000',
-    'date': '2021-10-10',
-    'status': 'Diterima',
-  };
+  const DetailIncomingItemPage({super.key, required this.incomingItemId, required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
           AppBar(title: const Text('Detail Barang Masuk'), centerTitle: true),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              incoming_item['name']!,
-              style: const TextStyle(
-                fontSize: 20,
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Jumlah: ${incoming_item['quantity']}',
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              incoming_item['total']!,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              incoming_item['date']!,
-              style: const TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              incoming_item['status']!,
-              style: const TextStyle(fontSize: 16, color: Colors.green),
-            ),
-            const Spacer(),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  _showDeleteDialog(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
+      body: FutureBuilder(
+        future: Provider.of<IncomingItemProvider>(context, listen: false).getIncomingItemById(token, incomingItemId),
+        builder: (context, snapshot) {
+          return Consumer<IncomingItemProvider> (
+            builder: (context, provider, child) {
+              if (provider.isLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              final incomingItem = provider.incomingItemDetail;
+
+              if (incomingItem == null) {
+                return const Center(child: Text('Barang masuk tidak ditemukan'));
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                     Center(
+                       child: Image.network(
+                          incomingItem['products']['image_url'] ?? 'https://fakeimg.pl/150',
+                          width: 150,
+                          height: 150,
+                       ),
+                     ) ,
+                      const SizedBox(height: 16),
+                      Text(
+                        incomingItem['products']['name'] ?? '-',
+                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
+
+                      const SizedBox(height: 8),
+                      Text(
+                        'Jumlah: ${incomingItem['qty'] ?? 'Tidak tersedia'}',
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+
+                      const SizedBox(height: 8),
+                      Text(
+                        'Tanggal: ${incomingItem['incoming_at'] ?? 'Tidak tersedia'}',
+                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+
+                      const Spacer(),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _showDeleteDialog(context);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: const Text('Hapus Barang Masuk', style: TextStyle(fontSize: 16, color: Colors.white)),
+                        ),
+                      )
+                    ],
                 ),
-                child: const Text('Hapus Barang Masuk', style: TextStyle(fontSize: 16, color: Colors.white)),
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            },
+          );
+        }
+      )
     );
   }
 }

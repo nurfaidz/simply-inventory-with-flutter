@@ -89,7 +89,10 @@ class _IncomingItemPageState extends State<IncomingItemPage> {
           ],
         ),
         onTap: () {
-          Navigator.pushNamed(context, '/incoming-items/show');
+          Navigator.pushNamed(context, '/incoming-items/show', arguments: {
+            'incomingItemId': incomingItemId,
+            'token': Provider.of<AuthProvider>(context, listen: false).token,
+          });
         },
       ),
     );

@@ -28,7 +28,10 @@ class AppRoutes {
         // Incoming Item
         '/incoming-items': (context) => const IncomingItemPage(),
         '/incoming-items/create': (context) => const CreateIncomingItemPage(),
-        '/incoming-items/show': (context) => const DetailIncomingItemPage(),
+        '/incoming-items/show': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              return DetailIncomingItemPage(incomingItemId: args['incomingItemId'].toString(), token: args['token'] as String);
+        },
 
         // Outgoing Item
         '/outgoing-items': (context) => const OutgoingItemPage(),
