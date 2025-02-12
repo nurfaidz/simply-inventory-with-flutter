@@ -39,8 +39,16 @@ class IncomingItemService {
     return null;
   }
 
-  Future<Response> createIncomingItem(String token, Map<String, dynamic> data) async {
-    return await _dio.post('incoming-items', data: data, options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<Response?> createIncomingItem(String token, Map<String, dynamic> incomingItemData) async {
+    try {
+      return await _dio.post('/incoming-items/', data: incomingItemData, options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+        'Content-Type' : 'application/json',
+      }));
+    } on DioException catch (e) {
+      print("Error create incoming item: ${e.response?.statusCode} - ${e.message}");
+      return e.response;
+    }
   }
 
   Future<Response> updateIncomingItem(String token, String incomingItemId, Map<String, dynamic> data) async {

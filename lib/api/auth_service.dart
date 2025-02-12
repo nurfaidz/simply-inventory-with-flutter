@@ -22,7 +22,7 @@ class AuthService {
     return false;
   }
 
-  Future<String?> login(String email, String password) async {
+  Future<Map<String, dynamic>?> login(String email, String password) async {
     try {
       Response response = await _dio.post('/users/login', data: {
         'email' : email,
@@ -30,11 +30,17 @@ class AuthService {
       });
 
       if (response.statusCode == 200) {
-        String token = response.data['token'];
-        return token;
+        return {
+          'token' : response.data['token'],
+          'user' : response.data['user'],
+        };
       }
     } on DioException catch (e) {
-      print("Login error: $e");
+      if (e.response != null) {
+        print("Login error: ${e.response?.data}");
+      } else {
+        print("Login error: ${e.message}");
+      }
     }
 
     return null;

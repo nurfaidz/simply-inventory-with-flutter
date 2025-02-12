@@ -50,18 +50,21 @@ class IncomingItemProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addIncomingItem(
+  Future<bool> createIncomingItem(
       String token, Map<String, dynamic> incomingItemData) async {
     try {
       final response = await _incomingItemService.createIncomingItem(
           token, incomingItemData);
-      if (response.statusCode == 201) {
+
+      if (response != null && response.statusCode == 200) {
         _incomingItems.add(response.data);
         notifyListeners();
+        return true;
       }
     } catch (e) {
-      print('Error adding incoming item: $e');
+      print('Error adding incoming item: $e.response');
     }
+    return false;
   }
 
   Future<void> updateIncomingItem(String token, String incomingItemId,
