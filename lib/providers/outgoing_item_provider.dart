@@ -3,12 +3,13 @@ import '../api/outgoing_item_service.dart';
 
 class OutgoingItemProvider with ChangeNotifier {
   final OutgoingItemService _outgoingItemService = OutgoingItemService();
+
   List<dynamic> _outgoingItems = [];
-  Map<String, dynamic>? _incomingItemDetail;
-  bool _isLoading = true;
+  Map<String, dynamic>? _outgoingItemDetail;
+  bool _isLoading = false;
 
   List<dynamic> get outgoingItems => _outgoingItems;
-  Map<String, dynamic>? get incomingItemDetail => _incomingItemDetail;
+  Map<String, dynamic>? get outgoingItemDetail => _outgoingItemDetail;
   bool get isLoading => _isLoading;
 
   Future<void> getOutgoingItems(String token) async {
@@ -28,15 +29,23 @@ class OutgoingItemProvider with ChangeNotifier {
   }
 
   Future<void> getOutgoingItemById(String token, String outgoingItemId) async {
+    _isLoading = true;
+    notifyListeners();
+
     try {
       final response = await _outgoingItemService.getOutgoingItemById(token, outgoingItemId);
-      if (response.statusCode == 200) {
-        _outgoingItems.add(response.data);
-        notifyListeners();
+      if (response != null) {
+        _outgoingItemDetail = response;
+      } else {
+        _outgoingItemDetail = null;
       }
     } catch (e) {
       print('Error fetching outgoing item by id: $e');
+      _outgoingItemDetail = null;
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> createOutgoingItem(String token, Map<String, dynamic> outgoingItemData) async {

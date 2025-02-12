@@ -36,7 +36,10 @@ class AppRoutes {
         // Outgoing Item
         '/outgoing-items': (context) => const OutgoingItemPage(),
         '/outgoing-items/create': (context) => const CreateOutgoingItemPage(),
-        '/outgoing-items/show': (context) => const DetailOutgoingItemPage(),
+        '/outgoing-items/show': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              return DetailOutgoingItemPage(outgoingItemId: args['outgoingItemId'].toString(), token: args['token'] as String);
+        },
 
         // Auth
         '/login': (context) => const LoginPage(),

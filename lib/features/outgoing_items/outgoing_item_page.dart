@@ -86,6 +86,10 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
           Navigator.pushNamed(
             context,
             '/outgoing-items/show',
+            arguments: {
+              'token': Provider.of<AuthProvider>(context, listen: false).token,
+          'outgoingItemId': outgoingItemId,
+          }
           );
         },
       ),
