@@ -1,66 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory_app/providers/auth_provider.dart';
+import 'package:flutter_inventory_app/providers/outgoing_item_provider.dart';
+import 'package:provider/provider.dart';
 
-class OutgoingItemPage extends StatelessWidget {
+class OutgoingItemPage extends StatefulWidget {
   const OutgoingItemPage({super.key});
 
-  final List<Map<String, String>> outgoing_items = const [
-    {
-      'name': 'Barang Keluar 1',
-      'quantity': '10',
-      'total': 'Rp 1.000.000',
-      'date': '2021-10-10',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Keluar 2',
-      'quantity': '20',
-      'total': 'Rp 2.000.000',
-      'date': '2021-10-11',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Keluar 3',
-      'quantity': '30',
-      'total': 'Rp 3.000.000',
-      'date': '2021-10-12',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Keluar 4',
-      'quantity': '40',
-      'total': 'Rp 4.000.000',
-      'date': '2021-10-13',
-      'status': 'Diterima',
-    },
-    {
-      'name': 'Barang Keluar 5',
-      'quantity': '50',
-      'total': 'Rp 5.000.000',
-      'date': '2021-10-14',
-      'status': 'Diterima',
-    }
-  ];
+  @override
+  _OutgoingItemPageState createState() => _OutgoingItemPageState();
+}
+
+class _OutgoingItemPageState extends State<OutgoingItemPage>{
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      final outgoingItemProvider = Provider.of<OutgoingItemProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      String token = authProvider.token!;
+      outgoingItemProvider.getOutgoingItems(token);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Barang Keluar'), centerTitle: true),
+      appBar: AppBar(title: const Text('Daftar Barang Keluar'), centerTitle: true),
       body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView.builder(
-            itemCount: outgoing_items.length,
-            itemBuilder: (context, index) {
-              final outgoing_item = outgoing_items[index];
-              return _buildOutgoingCard(
-                context: context,
-                name: outgoing_item['name']!,
-                quantity: outgoing_item['quantity']!,
-                total: outgoing_item['total']!,
-                date: outgoing_item['date']!,
-                status: outgoing_item['status']!,
-              );
-            },
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Consumer<OutgoingItemProvider>(
+          builder: (context, outgoingItemProvider, _) {
+            if (outgoingItemProvider.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (outgoingItemProvider.outgoingItems.isEmpty) {
+              return const Center(child: Text('Belum ada barang keluar'));
+            }
+
+            return ListView.builder(
+              itemCount: outgoingItemProvider.outgoingItems.length,
+              itemBuilder: (context, index) {
+                final outgoingItem = outgoingItemProvider.outgoingItems[index];
+                return _buildOutgoingCard(
+                  context: context,
+                  outgoingItemId: outgoingItem['id'],
+                  name: outgoingItem['products']['name'] ?? '-',
+                  quantity: outgoingItem['qty'],
+                  date: outgoingItem['outgoing_at'],
+                );
+              },
+            );
+          },
+        )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -71,7 +63,7 @@ class OutgoingItemPage extends StatelessWidget {
     );
   }
 
-  Widget _buildOutgoingCard({required BuildContext context, required String name, required String quantity, required String total, required String date, required String status}) {
+  Widget _buildOutgoingCard({required BuildContext context, required int outgoingItemId, required String name, required int quantity, required String date}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -81,13 +73,13 @@ class OutgoingItemPage extends StatelessWidget {
           name,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(total, style: const TextStyle(color: Colors.grey)),
+        subtitle: Text('Jumlah: $quantity', style: const TextStyle(color: Colors.grey)),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(date, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 4),
-            Text(status, style: const TextStyle(color: Colors.green)),
+            Text('Diterima', style: const TextStyle(color: Colors.green)),
           ],
         ),
         onTap: () {

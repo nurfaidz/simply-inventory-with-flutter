@@ -4,10 +4,11 @@ import '../api/outgoing_item_service.dart';
 class OutgoingItemProvider with ChangeNotifier {
   final OutgoingItemService _outgoingItemService = OutgoingItemService();
   List<dynamic> _outgoingItems = [];
+  Map<String, dynamic>? _incomingItemDetail;
   bool _isLoading = true;
 
   List<dynamic> get outgoingItems => _outgoingItems;
-
+  Map<String, dynamic>? get incomingItemDetail => _incomingItemDetail;
   bool get isLoading => _isLoading;
 
   Future<void> getOutgoingItems(String token) async {
@@ -15,13 +16,15 @@ class OutgoingItemProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await _outgoingItemService.getOutgoingItems(token);
-      if (response.statusCode == 200) {
-        _outgoingItems = response.data;
-      }
+      final List<dynamic> response = await _outgoingItemService.getOutgoingItems(token);
+      print('Outgoing items: $response');
+      _outgoingItems = response;
     } catch (e) {
       print('Error fetching outgoing items: $e');
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> getOutgoingItemById(String token, String outgoingItemId) async {

@@ -4,8 +4,21 @@ import '../api/api_client.dart';
 class OutgoingItemService {
   final Dio _dio = ApiClient.getDio();
 
-  Future<Response> getOutgoingItems(String token) async {
-    return await _dio.get('/outgoing-items', options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<List<dynamic>> getOutgoingItems(String token) async {
+    try {
+      final response = await _dio.get('/outgoing-items', options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+
+      if (response.statusCode == 200) {
+        print("Data outgoing items: ${response.data}");
+        return response.data;
+      }
+    } catch (e) {
+      print("Error fetching outgoing items: $e");
+    }
+
+    return [];
   }
 
   Future<Response> getOutgoingItemById(String token, String outgoingItemId) async {
