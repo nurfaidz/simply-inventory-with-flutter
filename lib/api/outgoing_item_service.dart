@@ -38,12 +38,22 @@ class OutgoingItemService {
     return null;
   }
 
-  Future<Response> createOutgoingItem(String token, Map<String, dynamic> data) async {
-    return await _dio.post('/outgoing-items', data: data, options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<Response?> createOutgoingItem(String token, Map<String, dynamic> outgoingItemData) async {
+    try {
+      return await _dio.post('/outgoing-items/', data: outgoingItemData, options: Options(
+        headers: {
+          'Authorization' : 'Bearer $token',
+          'Content-Type' : 'application/json',
+        }
+      ));
+    } on DioException catch (e) {
+      print("Error create outgoing item: ${e.response?.statusCode} - ${e.message}");
+      return e.response;
+    }
   }
 
   Future<Response> updateOutgoingItem(String token, String outgoingItemId, Map<String, dynamic> data) async {
-    return await _dio.put('/outgoin-items/$outgoingItemId', data: data, options: Options(headers: {'Authorization': 'Bearer $token'}));
+    return await _dio.put('/outgoing-items/$outgoingItemId', data: data, options: Options(headers: {'Authorization': 'Bearer $token'}));
   }
 
   Future<Response> deleteOutgoingItem(String token, String outgoingItemId) async {

@@ -58,11 +58,11 @@ class _CreateIncomingItemPageState extends State<CreateIncomingItemPage> {
     if (success) {
       Navigator.pushReplacementNamed(context, '/incoming-items');
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data berhasil disimpan')),
+        const SnackBar(content: Text('Barang masuk berhasil ditambahkan')),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Data gagal disimpan, coba lagi')),
+        const SnackBar(content: Text('Gagal menambahkan barang masuk')),
       );
     }
   }
@@ -99,7 +99,7 @@ class _CreateIncomingItemPageState extends State<CreateIncomingItemPage> {
                 value: _selectedItem,
                 items: productProvider.products.map<DropdownMenuItem<String>>((product) {
                   return DropdownMenuItem<String>(
-                    value: product['id'].toString(), // Pastikan ID dalam bentuk String
+                    value: product['id'].toString(),
                     child: Text(product['name'] ?? '-'),
                   );
                 }).toList(),
@@ -115,7 +115,7 @@ class _CreateIncomingItemPageState extends State<CreateIncomingItemPage> {
               TextFormField(
                 controller: _quantityController,
                 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(hintText: 'Masukkan jumlah'),
+                decoration: const InputDecoration(hintText: 'Masukkan jumlah barang'),
                 validator: (value) => (value == null || value.isEmpty) ? 'Masukkan jumlah barang' : null,
               ),
               const SizedBox(height: 16),

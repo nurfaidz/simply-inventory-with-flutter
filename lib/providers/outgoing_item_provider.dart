@@ -48,15 +48,23 @@ class OutgoingItemProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createOutgoingItem(String token, Map<String, dynamic> outgoingItemData) async {
+  Future<bool> createOutgoingItem(String token, Map<String, dynamic> outgoingItemData) async {
     try {
       final response = await _outgoingItemService.createOutgoingItem(token, outgoingItemData);
-      if (response.statusCode == 201) {
+
+      print('Response: $response');
+
+      if (response != null && response.statusCode == 200) {
         _outgoingItems.add(response.data);
         notifyListeners();
+        return true;
+      } else {
+        return false;
       }
+
     } catch (e) {
-      print('Error adding outgoing item: $e');
+      print('Error creating outgoing item: $e');
+      return false;
     }
   }
 
