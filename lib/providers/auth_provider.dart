@@ -31,4 +31,16 @@ class AuthProvider with ChangeNotifier{
 
     return false;
   }
+
+  Future<bool> logout() async {
+    bool success = await _authService.logout();
+    if (success) {
+      _token = null;
+      _user = null;
+      notifyListeners();
+      return true;
+    }
+
+    return false;
+  }
 }
