@@ -54,9 +54,14 @@ class ProductService {
 
   Future<Response> updateProduct(
       String token, String productId, Map<String, dynamic> productData) async {
-    return await _dio.put('/products/$productId',
-        data: productData,
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    try {
+      return await _dio.put('/products/$productId', data: productData, options: Options(headers: {
+        'Authorization' : 'Bearer $token',
+      }));
+    } catch (e) {
+      print("Error updating product: $e");
+      return Response(requestOptions: RequestOptions(path: ''), statusCode: 500);
+    }
   }
 
   Future<Response> deleteProduct(String token, String productId) async {

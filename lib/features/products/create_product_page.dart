@@ -72,7 +72,6 @@ class _CreateProductPageState extends State<CreateProductPage> {
                 controller: _stockController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(hintText: 'Masukkan stok barang'),
-                // validator: (value) => (value == null || value.isEmpty) ? 'Stok barang tidak boleh kosong' : null,
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Stok barang tidak boleh kosong';
                   if (int.tryParse(value) == null) return 'Stok barang harus berupa angka';

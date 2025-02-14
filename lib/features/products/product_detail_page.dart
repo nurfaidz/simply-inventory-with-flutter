@@ -56,6 +56,26 @@ class ProductDetailPage extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/products/edit',
+                            arguments: {
+                              'productId': product['id'].toString(),
+                              'token': token,
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                        child: const Text('Ubah Produk', style: TextStyle(fontSize: 16)),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
                           _showDeleteDialog(context);
                         },
                         style: ElevatedButton.styleFrom(

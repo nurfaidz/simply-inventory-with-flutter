@@ -62,17 +62,23 @@ class ProductProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> updateProduct(String token, String productId, Map<String, dynamic> productData) async {
+  Future<bool> updateProduct(String token, String productId, Map<String, dynamic> productData) async {
     try {
       final response = await _productService.updateProduct(token, productId, productData);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final index = _products.indexWhere((product) => product['_id'] == productId);
-        _products[index] = response.data;
-        notifyListeners();
+        if (index != -1) {
+          _products[index] = response.data;
+          notifyListeners();
+        }
+
+        return true;
       }
     } catch(e) {
       print("Error updating product: $e");
     }
+
+    return false;
   }
 
   Future<void> deleteProduct(String token, String productId) async {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inventory_app/features/products/edit_product_page.dart';
 import 'package:flutter_inventory_app/features/screens/profile_page.dart';
 import '../features/homes/home_page.dart';
 import '../features/products/product_page.dart';
@@ -23,6 +24,10 @@ class AppRoutes {
         '/products/show': (context) {
               final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
               return ProductDetailPage(productId: args['productId'].toString(), token: args['token'] as String);
+        },
+        '/products/edit': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              return EditProductPage(productId: args['productId'].toString());
         },
 
         // Incoming Item
