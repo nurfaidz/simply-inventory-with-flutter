@@ -51,8 +51,17 @@ class IncomingItemService {
     }
   }
 
-  Future<Response> updateIncomingItem(String token, String incomingItemId, Map<String, dynamic> data) async {
-    return await _dio.put('/incoming-items/$incomingItemId', data: data, options: Options(headers: {'Authorization': 'Bearer $token'}));
+  Future<Response> updateIncomingItem(String token, String incomingItemId, Map<String, dynamic> incomingItemData) async {
+    try {
+      return await _dio.put('/incoming-items/$incomingItemId', data: incomingItemData, options: Options(
+        headers: {
+          'Authorization' : 'Bearer $token',
+        }
+      ));
+    } catch (e) {
+      print("Error updating incoming: $e");
+      return Response(requestOptions: RequestOptions(path: ''), statusCode: 500);
+    }
   }
 
   Future<Response> deleteIncomingItem(String token, String incomingItemId) async {

@@ -67,20 +67,26 @@ class IncomingItemProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> updateIncomingItem(String token, String incomingItemId,
+  Future<bool> updateIncomingItem(String token, String incomingItemId,
       Map<String, dynamic> incomingItemData) async {
     try {
       final response = await _incomingItemService.updateIncomingItem(
           token, incomingItemId, incomingItemData);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final index = _incomingItems.indexWhere(
             (incomingItem) => incomingItem['_id'] == incomingItemId);
-        _incomingItems[index] = response.data;
-        notifyListeners();
+        if (index != -1) {
+          _incomingItems[index] = response.data;
+          notifyListeners();
+        }
+
+        return true;
       }
     } catch (e) {
       print('Error updating incoming item: $e');
     }
+
+    return false;
   }
 
   Future<void> deleteIncomingItem(String token, String incomingItemId) async {

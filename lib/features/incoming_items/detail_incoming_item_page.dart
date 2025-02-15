@@ -63,6 +63,18 @@ class DetailIncomingItemPage extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
+                            Navigator.pushNamed(context, '/incoming-items/edit', arguments: {
+                              'incomingItemId': incomingItem['id'].toString(),
+                              'token': token,
+                            });
+                          },
+                          child: const Text('Ubah Barang Masuk', style: TextStyle(fontSize: 16)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
                             _showDeleteDialog(context);
                           },
                           style: ElevatedButton.styleFrom(
