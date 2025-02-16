@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inventory_app/features/incoming_items/edit_incoming_item_page.dart';
+import 'package:flutter_inventory_app/features/outgoing_items/edit_outgoing_item_page.dart';
 import 'package:flutter_inventory_app/features/products/edit_product_page.dart';
 import 'package:flutter_inventory_app/features/screens/profile_page.dart';
 import '../features/homes/home_page.dart';
@@ -49,6 +50,10 @@ class AppRoutes {
         '/outgoing-items/show': (context) {
               final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
               return DetailOutgoingItemPage(outgoingItemId: args['outgoingItemId'].toString(), token: args['token'] as String);
+        },
+        '/outgoing-items/edit': (context) {
+              final args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+              return EditOutgoingItemPage(outgoingItemId: args['outgoingItemId'].toString());
         },
 
         // Auth

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inventory_app/providers/auth_provider.dart';
 import 'package:flutter_inventory_app/providers/incoming_item_provider.dart';
-import 'package:flutter_inventory_app/providers/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class EditIncomingItemPage extends StatefulWidget {
@@ -134,7 +133,7 @@ class _EditIncomingItemPageState extends State<EditIncomingItemPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      Text('Nama barang', style: Theme.of(context).textTheme.titleMedium),
+                      Text('Nama Barang', style: Theme.of(context).textTheme.titleMedium),
                       TextFormField(
                         controller: _productController,
                         keyboardType: TextInputType.text,
@@ -146,7 +145,7 @@ class _EditIncomingItemPageState extends State<EditIncomingItemPage> {
                           style: Theme.of(context).textTheme.titleMedium),
                       TextFormField(
                           controller: _quantityController,
-                          keyboardType: TextInputType.text,
+                          keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             hintText: 'Masukan jumlah barang',
                           ),
@@ -167,13 +166,13 @@ class _EditIncomingItemPageState extends State<EditIncomingItemPage> {
                         onTap: () => _selectDate(context),
                         child: InputDecorator(
                           decoration: const InputDecoration(
-                            hintText: 'Pilih tanggal masuk',
+                            hintText: 'Pilih Tanggal Masuk',
                             border: OutlineInputBorder(),
                           ),
                           child: Text(
                             _selectedDate != null
                                 ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"
-                                : "Pilih tanggal",
+                                : "Pilih Tanggal",
                             style: const TextStyle(fontSize: 16),
                           ),
                         ),
