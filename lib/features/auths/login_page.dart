@@ -46,49 +46,80 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Login')),
-        body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      )
-                  ),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/logo/logo.png', width: 180, height: 180),
+            const SizedBox(height: 16),
+
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2047A9)),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade400),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 24),
-                _isLoading
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: 'Password',
+                labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Color(0xFF2047A9)),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey.shade400),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Button Login
+            _isLoading
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
-                  onPressed: _login,
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                  ),
-                  child: const Text('Login'),
+              onPressed: _login,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2047A9),
+                minimumSize: const Size.fromHeight(50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(height: 16),
-                TextButton(onPressed: () {
-                  Navigator.pushNamed(context, '/registration');
-                }, child: const Text('Belum punya akun? Daftar disini', style: TextStyle(color: Colors.blue))),
-              ],
-            )
-        )
-      );
-    }
+              ),
+              child: const Text('Login', style: TextStyle(color: Colors.white)),
+            ),
+            const SizedBox(height: 16),
+
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/registration');
+              },
+              child: const Text(
+                'Belum punya akun? Daftar disini',
+                style: TextStyle(color: Color(0xFF2047A9)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
+}

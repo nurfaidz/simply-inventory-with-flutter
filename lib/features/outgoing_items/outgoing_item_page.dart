@@ -25,7 +25,7 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Barang Keluar'), centerTitle: true),
+      appBar: AppBar(title: const Text('Daftar Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Consumer<OutgoingItemProvider>(
@@ -48,6 +48,7 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
                   name: outgoingItem['products']['name'] ?? '-',
                   quantity: outgoingItem['qty'],
                   date: outgoingItem['outgoing_at'],
+                  status: outgoingItem['status'],
                 );
               },
             );
@@ -63,7 +64,7 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
     );
   }
 
-  Widget _buildOutgoingCard({required BuildContext context, required int outgoingItemId, required String name, required int quantity, required String date}) {
+  Widget _buildOutgoingCard({required BuildContext context, required int outgoingItemId, required String name, required int quantity, required String date, required String status}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -79,7 +80,9 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
           children: [
             Text(date, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 4),
-            Text('Diterima', style: const TextStyle(color: Colors.green)),
+            Text(status == 'succeed' ? 'Sukses' : 'Dibatalkan', style: TextStyle(
+              color: status == 'succeed' ? Colors.green : Colors.red,
+            ),)
           ],
         ),
         onTap: () {

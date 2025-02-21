@@ -11,7 +11,7 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Produk'), centerTitle: true),
+      appBar: AppBar(title: const Text('Detail Produk'), centerTitle: true, automaticallyImplyLeading: false),
       body: FutureBuilder(
         future: Provider.of<ProductProvider>(context, listen: false).getProductById(token, productId),
         builder: (context, snapshot) {

@@ -60,7 +60,7 @@ class _EditProductPageState extends State<EditProductPage> {
     final token = Provider.of<AuthProvider>(context).token;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Produk'), centerTitle: true),
+      appBar: AppBar(title: const Text('Edit Produk'), centerTitle: true, automaticallyImplyLeading: false),
       body: FutureBuilder(
           future: Provider.of<ProductProvider>(context, listen: false)
               .getProductById(token!, widget.productId),

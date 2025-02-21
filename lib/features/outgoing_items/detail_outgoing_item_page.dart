@@ -11,7 +11,7 @@ class DetailOutgoingItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Barang Keluar'), centerTitle: true),
+      appBar: AppBar(title: const Text('Detail Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
       body: FutureBuilder(
         future: Provider.of<OutgoingItemProvider>(context, listen: false).getOutgoingItemById(token, outgoingItemId),
         builder: (context, snapshot) {
@@ -55,6 +55,15 @@ class DetailOutgoingItemPage extends StatelessWidget {
                     Text(
                       'Tanggal: ${outgoingItem['outgoing_at'] ?? 'Tidak tersedia'}',
                       style: const TextStyle(fontSize: 16, color: Colors.grey),
+                    ),
+
+                    const SizedBox(height: 8),
+                    Text(
+                    outgoingItem['status'] == 'succeed' ? 'Sukses' : 'Dibatalkan',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: outgoingItem['status'] == 'succeed' ? Colors.green : Colors.red,
+                      ),
                     ),
 
                     const Spacer(),

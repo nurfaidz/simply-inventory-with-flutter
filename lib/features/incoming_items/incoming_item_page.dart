@@ -26,7 +26,7 @@ class _IncomingItemPageState extends State<IncomingItemPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: const Text('Daftar Barang Masuk'), centerTitle: true),
+            AppBar(title: const Text('Daftar Barang Masuk'), centerTitle: true, automaticallyImplyLeading: false),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Consumer<IncomingItemProvider>(
@@ -49,6 +49,7 @@ class _IncomingItemPageState extends State<IncomingItemPage> {
                     name: incomingItem['products']['name'] ?? '-',
                     quantity: incomingItem['qty'],
                     date: incomingItem['incoming_at'],
+                    status: incomingItem['status'],
                   );
                 },
               );
@@ -68,7 +69,7 @@ class _IncomingItemPageState extends State<IncomingItemPage> {
         required int incomingItemId,
         required String name,
       required int quantity,
-      // required String total,
+      required String status,
       required String date}) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -85,7 +86,9 @@ class _IncomingItemPageState extends State<IncomingItemPage> {
           children: [
             Text(date, style: const TextStyle(color: Colors.grey)),
             const SizedBox(height: 4),
-            Text('Diterima', style: const TextStyle(color: Colors.green)),
+            Text(status == 'succeed' ? 'Sukses' : 'Dibatalkan', style: TextStyle(
+              color: status == 'succeed' ? Colors.green : Colors.red,
+            ),)
           ],
         ),
         onTap: () {

@@ -78,7 +78,7 @@ class _CreateOutgoingItemPageState extends State<CreateOutgoingItemPage> {
     final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Tambah Barang Keluar'), centerTitle: true),
+      appBar: AppBar(title: const Text('Tambah Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(

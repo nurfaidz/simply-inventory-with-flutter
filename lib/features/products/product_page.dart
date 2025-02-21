@@ -25,7 +25,7 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Produk'), centerTitle: true),
+      appBar: AppBar(title: const Text('Daftar Produk'), centerTitle: true, automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Consumer<ProductProvider>(

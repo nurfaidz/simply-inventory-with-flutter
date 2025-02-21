@@ -98,7 +98,7 @@ class _EditOutgoingItemPageState extends State<EditOutgoingItemPage> {
     final token = Provider.of<AuthProvider>(context).token;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Barang Keluar'), centerTitle: true),
+      appBar: AppBar(title: const Text('Edit Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
       body: FutureBuilder(
         future: Provider.of<OutgoingItemProvider>(context, listen: false).getOutgoingItemById(token!, widget.outgoingItemId),
         builder: (context, snapshot) {

@@ -50,7 +50,7 @@ class _CreateProductPageState extends State<CreateProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tambah Produk'), centerTitle: true),
+      appBar: AppBar(title: const Text('Tambah Produk'), centerTitle: true, automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(

@@ -12,7 +12,7 @@ class DetailIncomingItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:
-          AppBar(title: const Text('Detail Barang Masuk'), centerTitle: true),
+          AppBar(title: const Text('Detail Barang Masuk'), centerTitle: true, automaticallyImplyLeading: false),
       body: FutureBuilder(
         future: Provider.of<IncomingItemProvider>(context, listen: false).getIncomingItemById(token, incomingItemId),
         builder: (context, snapshot) {
@@ -56,6 +56,15 @@ class DetailIncomingItemPage extends StatelessWidget {
                       Text(
                         'Tanggal: ${incomingItem['incoming_at'] ?? 'Tidak tersedia'}',
                         style: const TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+
+                      const SizedBox(height: 8),
+                      Text(
+                        incomingItem['status'] == 'succeed' ? 'Sukses' : 'Dibatalkan',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: incomingItem['status'] == 'succeed' ? Colors.green : Colors.red,
+                        ),
                       ),
 
                       const Spacer(),

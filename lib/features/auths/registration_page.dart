@@ -26,7 +26,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
       );
 
       setState(() => _isLoading = false);
-      
+
       if (success) {
         Navigator.pushReplacementNamed(context, '/login');
         ScaffoldMessenger.of(context).showSnackBar(
@@ -42,55 +42,86 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Registration')),
+      appBar: AppBar(automaticallyImplyLeading: false),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              Image.asset('assets/images/logo/logo.png', width: 180, height: 180),
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: _usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF2047A9)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(12),
+                  )
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF2047A9)),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 16),
+
+              TextField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
+              const SizedBox(height: 24),
+
+              _isLoading
+              ? const CircularProgressIndicator()
+              : ElevatedButton(onPressed: _register,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF2047A9),
+                  minimumSize: const Size.fromHeight(50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+              ),
+                child: const Text('Register', style: TextStyle(color: Colors.white)),
+              ),
+              const SizedBox(height: 16),
+              TextButton(onPressed: () {
+                Navigator.pushNamed(context, '/login');
+                }, child: const Text('Sudah punya akun? Login disini', style: TextStyle(color: Colors.blue)),)
+              ],
             ),
-            const SizedBox(height: 24),
-            _isLoading
-            ? const CircularProgressIndicator()
-            : ElevatedButton(onPressed: _register,
-            style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
-              child: const Text('Register'),
-            ),
-            const SizedBox(height: 16),
-            TextButton(onPressed: () {
-              Navigator.pushNamed(context, '/login');
-              }, child: const Text('Sudah punya akun? Login disini', style: TextStyle(color: Colors.blue)),)
-          ],
         ),
-      ),
     );
   }
 }

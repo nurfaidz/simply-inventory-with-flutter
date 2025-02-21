@@ -86,6 +86,7 @@ class _CreateIncomingItemPageState extends State<CreateIncomingItemPage> {
       appBar: AppBar(
         title: const Text('Tambah Barang Masuk'),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
