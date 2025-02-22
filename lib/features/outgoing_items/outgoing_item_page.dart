@@ -25,9 +25,20 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('Daftar Barang Keluar',
+      style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          backgroundColor: const Color(0xFF2047A9),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(16),
         child: Consumer<OutgoingItemProvider>(
           builder: (context, outgoingItemProvider, _) {
             if (outgoingItemProvider.isLoading) {
@@ -35,11 +46,16 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
             }
 
             if (outgoingItemProvider.outgoingItems.isEmpty) {
-              return const Center(child: Text('Belum ada barang keluar'));
+              return const Center(child: Text('Belum ada barang keluar', style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+              )));
             }
 
-            return ListView.builder(
+            return ListView.separated(
               itemCount: outgoingItemProvider.outgoingItems.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final outgoingItem = outgoingItemProvider.outgoingItems[index];
                 return _buildOutgoingCard(
@@ -59,7 +75,8 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
         onPressed: () {
           Navigator.pushNamed(context, '/outgoing-items/create');
         },
-        child: const Icon(Icons.add),
+        backgroundColor: const Color(0xFF2047A9),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
@@ -69,6 +86,7 @@ class _OutgoingItemPageState extends State<OutgoingItemPage>{
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,
+      shadowColor: Colors.grey.withOpacity(0.3),
       child: ListTile(
         title: Text(
           name,

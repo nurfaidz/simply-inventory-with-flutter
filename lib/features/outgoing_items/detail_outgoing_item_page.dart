@@ -11,7 +11,17 @@ class DetailOutgoingItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('Detail Barang Keluar', style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          backgroundColor: const Color(0xFF2047A9),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+      ),
       body: FutureBuilder(
         future: Provider.of<OutgoingItemProvider>(context, listen: false).getOutgoingItemById(token, outgoingItemId),
         builder: (context, snapshot) {
@@ -27,16 +37,31 @@ class DetailOutgoingItemPage extends StatelessWidget {
                 return const Center(child: Text('Barang keluar tidak ditemukan'));
               }
 
-              return Padding(
+              return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Image.network(
-                        outgoingItem['products']['image_url'] ?? 'https://fakeimg.pl/150',
-                        width: 150,
-                        height: 150,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: const Offset(2, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            outgoingItem['products']['image_url'] ?? 'https://fakeimg.pl/150',
+                            width: 150,
+                            height: 150,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -66,46 +91,27 @@ class DetailOutgoingItemPage extends StatelessWidget {
                       ),
                     ),
 
-                    const Spacer(),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/outgoing-items/edit',
-                                  arguments: {
-                                    'outgoingItemId': outgoingItem['id'].toString(),
-                                  },
-                                );
-                              },
-                              style: OutlinedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                              child: const Text('Ubah', style: TextStyle(fontSize: 16, color: Colors.black)),
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _showDeleteDialog(context);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.red,
-                                padding: const EdgeInsets.symmetric(vertical: 14),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                              child: const Text('Batalkan', style: TextStyle(fontSize: 16, color: Colors.white)),
-                            ),
-                          ),
-                        ],
+                    const SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/outgoing-items/edit',
+                            arguments: {
+                              'outgoingItemId': outgoingItem['id'].toString(),
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2047A9),
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        child: const Text('Ubah', style: TextStyle(fontSize: 16, color: Colors.white)),
                       ),
-                    ),
+                    )
                   ],
                 ),
               );
