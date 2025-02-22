@@ -36,6 +36,7 @@ class _HomePageState extends State<HomePage> {
           preferredSize: Size.fromHeight(60.0),
           child: HeaderWidget(),
         ),
+        backgroundColor: const Color(0xFF2047A9),
       ),
       body: Center(
         child: GridView.count(
@@ -59,43 +60,8 @@ class _HomePageState extends State<HomePage> {
                 icon: Icons.output,
                 label: 'Barang Keluar',
                 route: '/outgoing-items'),
-            GestureDetector(
-              onTap: () => _logout(),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF4A90E2), Color(0xFF007AFF)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: const Offset(2, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _isLoading
-                        ? const CircularProgressIndicator()
-                        : Icon(Icons.logout, size: 48, color: Colors.white),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Logout',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )
+            _buildMenuItem(context,
+                icon: Icons.logout, label: 'Logout', onTap: _logout, isLoading: _isLoading),
           ],
         ),
       ),
@@ -104,13 +70,13 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget _buildMenuItem(BuildContext context,
-    {required icon, required String label, required String route}) {
+    {required IconData icon, required String label, String? route, VoidCallback? onTap, bool isLoading = false}) {
   return GestureDetector(
-    onTap: () => Navigator.pushNamed(context, route),
+    onTap: onTap ?? () => Navigator.pushNamed(context, route!),
     child: Container(
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF4A90E2), Color(0xFF007AFF)],
+          colors: [Color(0xFF2047A9), Color(0xFF102B75)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -126,7 +92,9 @@ Widget _buildMenuItem(BuildContext context,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 48, color: Colors.white),
+          isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : Icon(icon, size: 48, color: Colors.white),
           const SizedBox(height: 8),
           Text(
             label,

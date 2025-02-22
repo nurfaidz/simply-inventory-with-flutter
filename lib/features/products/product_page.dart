@@ -15,7 +15,8 @@ class _ProductPageState extends State<ProductPage> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      final productProvider = Provider.of<ProductProvider>(context, listen: false);
+      final productProvider =
+          Provider.of<ProductProvider>(context, listen: false);
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       String token = authProvider.token!;
       productProvider.getProducts(token);
@@ -25,9 +26,20 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Produk'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Text('Daftar Produk', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: const Color(0xFF2047A9),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(16),
         child: Consumer<ProductProvider>(
           builder: (context, productProvider, _) {
             if (productProvider.isLoading) {
@@ -35,14 +47,29 @@ class _ProductPageState extends State<ProductPage> {
             }
 
             if (productProvider.products.isEmpty) {
-              return const Center(child: Text('Belum ada produk'));
+              return const Center(
+                child: Text(
+                  'Belum ada produk',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey),
+                ),
+              );
             }
 
-            return ListView.builder(
+            return ListView.separated(
               itemCount: productProvider.products.length,
+              separatorBuilder: (_, __) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
                 final product = productProvider.products[index];
-                return _buildProductCard(context: context, productId:product['id'], name: product['name'] ?? '-', stock: product['stock'], imageUrl: product['image_url'] ?? 'https://fakeimg.pl/150');
+                return _buildProductCard(
+                  context: context,
+                  productId: product['id'],
+                  name: product['name'] ?? '-',
+                  stock: product['stock'],
+                  imageUrl: product['image_url'] ?? 'https://fakeimg.pl/150',
+                );
               },
             );
           },
@@ -52,37 +79,55 @@ class _ProductPageState extends State<ProductPage> {
         onPressed: () {
           Navigator.pushNamed(context, '/products/create');
         },
-        child: const Icon(Icons.add),
+        backgroundColor: const Color(0xFF2047A9),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
 
-  Widget _buildProductCard(
-      {required BuildContext context,
-      required int productId,
-      required String name,
-      required int stock,
-      required String imageUrl}) {
+  Widget _buildProductCard({
+    required BuildContext context,
+    required int productId,
+    required String name,
+    required int stock,
+    required String imageUrl,
+  }) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,
+      shadowColor: Colors.grey.withOpacity(0.3),
       child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.network(
             imageUrl,
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
             fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => Container(
+              width: 60,
+              height: 60,
+              color: Colors.grey[300],
+              child: const Icon(Icons.image_not_supported, color: Colors.grey),
+            ),
           ),
         ),
         title: Text(
           name,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87),
         ),
-        subtitle: Text('Stock: $stock', style: const TextStyle(color: Colors.grey)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        subtitle: Text(
+          'Stock: $stock',
+          style: const TextStyle(color: Colors.black87),
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios,
+            size: 16, color: Color(0xFF2047A9)),
         onTap: () {
           Navigator.pushNamed(
             context,
@@ -90,7 +135,7 @@ class _ProductPageState extends State<ProductPage> {
             arguments: {
               'productId': productId,
               'token': Provider.of<AuthProvider>(context, listen: false).token,
-            }
+            },
           );
         },
       ),

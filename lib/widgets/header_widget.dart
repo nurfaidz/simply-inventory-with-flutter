@@ -7,7 +7,7 @@ class HeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      title: const Text('Simple Inventory'),
+      title: Image.asset('assets/images/logo/logo.png', height: 40),
       actions: [
         GestureDetector(
           onTap: () {

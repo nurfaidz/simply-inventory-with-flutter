@@ -11,11 +11,22 @@ class ProductDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detail Produk'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(
+        title: const Text('Detail Produk', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
+        backgroundColor: Color(0xFF2047A9),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        )
+      ),
       body: FutureBuilder(
         future: Provider.of<ProductProvider>(context, listen: false).getProductById(token, productId),
         builder: (context, snapshot) {
-          return Consumer<ProductProvider> (
+          return Consumer<ProductProvider>(
             builder: (context, provider, child) {
               if (provider.isLoading) {
                 return const Center(child: CircularProgressIndicator());
@@ -27,16 +38,32 @@ class ProductDetailPage extends StatelessWidget {
                 return const Center(child: Text('Produk tidak ditemukan'));
               }
 
-              return Padding(
+              return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: Image.network(
-                        product['image_url'] ?? 'https://fakeimg.pl/150',
-                        width: 150,
-                        height: 150,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 8,
+                              offset: const Offset(2, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            product['image_url'] ?? 'https://fakeimg.pl/150',
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -44,14 +71,12 @@ class ProductDetailPage extends StatelessWidget {
                       product['name'] ?? '-',
                       style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-
                     const SizedBox(height: 8),
                     Text(
                       'Stok: ${product['stock'] ?? 'Tidak tersedia'}',
                       style: const TextStyle(fontSize: 16, color: Colors.grey),
                     ),
-
-                    const Spacer(),
+                    const SizedBox(height: 24),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -67,20 +92,25 @@ class ProductDetailPage extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 14),
+                          backgroundColor: Color(0xFF2047A9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        child: const Text('Ubah Produk', style: TextStyle(fontSize: 16)),
+                        child: const Text('Ubah Produk', style: TextStyle(fontSize: 16, color: Colors.white)),
                       ),
                     ),
                     const SizedBox(height: 10),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {
-                          _showDeleteDialog(context);
-                        },
+                        onPressed: () => _showDeleteDialog(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.redAccent,
                           padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
                         child: const Text('Hapus Produk', style: TextStyle(fontSize: 16, color: Colors.white)),
                       ),
@@ -91,7 +121,7 @@ class ProductDetailPage extends StatelessWidget {
             },
           );
         },
-      )
+      ),
     );
   }
 }
@@ -100,8 +130,9 @@ void _showDeleteDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Hapus Produk'),
+      title: const Text('Hapus Produk', style: TextStyle(fontWeight: FontWeight.bold)),
       content: const Text('Apakah Anda yakin ingin menghapus produk ini?'),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
@@ -109,7 +140,7 @@ void _showDeleteDialog(BuildContext context) {
         ),
         TextButton(
           onPressed: () {
-              Navigator.pop(context);
+            Navigator.pop(context);
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 content: Text('Produk telah dihapus'),
@@ -117,8 +148,8 @@ void _showDeleteDialog(BuildContext context) {
             );
           },
           child: const Text('Hapus', style: TextStyle(color: Colors.red)),
-        )
+        ),
       ],
-    )
+    ),
   );
 }
