@@ -98,7 +98,17 @@ class _EditOutgoingItemPageState extends State<EditOutgoingItemPage> {
     final token = Provider.of<AuthProvider>(context).token;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Barang Keluar'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('Edit Barang Keluar', style: TextStyle(color: Colors.white)), 
+          centerTitle: true,
+          backgroundColor: const Color(0xFF2047A9),
+          elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: FutureBuilder(
         future: Provider.of<OutgoingItemProvider>(context, listen: false).getOutgoingItemById(token!, widget.outgoingItemId),
         builder: (context, snapshot) {
@@ -125,20 +135,40 @@ class _EditOutgoingItemPageState extends State<EditOutgoingItemPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 16),
-                      Text('Nama Barang', style: Theme.of(context).textTheme.titleMedium),
                       TextFormField(
                         controller: _productController,
                         keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          labelText: 'Nama Barang',
+                          labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF2047A9)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF2047A9)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         enabled: false,
                         style: const TextStyle(color: Colors.black),
                       ),
+
                       const SizedBox(height: 16),
-                      Text('Jumlah Barang', style: Theme.of(context).textTheme.titleMedium),
                       TextFormField(
                         controller: _quantityController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          hintText: 'Masukan jumlah barang',
+                        decoration: InputDecoration(
+                          labelText: 'Jumlah Barang',
+                          labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF2047A9)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Color(0xFF2047A9)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -149,13 +179,20 @@ class _EditOutgoingItemPageState extends State<EditOutgoingItemPage> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      Text('Tanggal Keluar', style: Theme.of(context).textTheme.titleMedium),
                       InkWell(
                         onTap: () => _selectDate(context),
                         child: InputDecorator(
-                          decoration: const InputDecoration(
-                            hintText: 'Pilih Tanggal Keluar',
-                            border: OutlineInputBorder(),
+                          decoration: InputDecoration(
+                            labelText: 'Tanggal Keluar',
+                            labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF2047A9)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF2047A9)),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
                           child: Text(_selectedDate != null
                           ? "${_selectedDate!.day}/${_selectedDate!.month}/${_selectedDate!.year}"

@@ -60,7 +60,17 @@ class _EditProductPageState extends State<EditProductPage> {
     final token = Provider.of<AuthProvider>(context).token;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit Produk'), centerTitle: true, automaticallyImplyLeading: false),
+      appBar: AppBar(title: const Text('Edit Produk', style: TextStyle(color: Colors.white)),
+          centerTitle: true,
+          backgroundColor: const Color(0xFF2047A9),
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+      ),
       body: FutureBuilder(
           future: Provider.of<ProductProvider>(context, listen: false)
               .getProductById(token!, widget.productId),
@@ -88,25 +98,39 @@ class _EditProductPageState extends State<EditProductPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 16),
-                        Text('Nama barang',
-                            style: Theme.of(context).textTheme.titleMedium),
                         TextFormField(
                           controller: _nameController,
                           keyboardType: TextInputType.text,
-                          decoration: const InputDecoration(
-                              hintText: 'Masukan nama barang'),
+                          decoration: InputDecoration(
+                              labelText: 'Nama Barang',
+                            labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(12),
+                            )
+                          ),
                           validator: (value) => value!.isEmpty
                               ? 'Nama barang tidak boleh kosong'
                               : null,
                         ),
                         const SizedBox(height: 16),
-                        Text('Stok barang',
-                            style: Theme.of(context).textTheme.titleMedium),
                         TextFormField(
                           controller: _stockController,
                           keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                              hintText: 'Masukan stok barang'),
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(color: Color(0xFF2047A9)),
+                              labelText: 'Stok Barang',
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(12),
+                            )
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty)
                               return 'Stok barang tidak boleh kosong';
