@@ -12,6 +12,9 @@ class ProductProvider with ChangeNotifier {
   Map<String, dynamic>? get productDetail => _productDetail;
   bool get isLoading => _isLoading;
 
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
+
   Future<void> getProducts(String token) async {
     _isLoading = true;
     notifyListeners();
@@ -81,13 +84,26 @@ class ProductProvider with ChangeNotifier {
     return false;
   }
 
-  Future<void> deleteProduct(String token, String productId) async {
+  Future<bool> deleteProduct(String token, String productId) async {
+    _isLoading = true;
+    notifyListeners();
+    _errorMessage = null;
+
     try {
-      await _productService.deleteProduct(token, productId);
-      _products.removeWhere((product) => product['_id'] == productId);
-      notifyListeners();
+      final response = await _productService.deleteProduct(token, productId);
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        notifyListeners();
+        return true;
+      } else {
+        _errorMessage = response.data['message'];
+      }
     } catch (e) {
       print("Error deleting product: $e");
+      _errorMessage = "Gagal menghapus produk. Silakan coba lagi.";
     }
+
+    _isLoading = false;
+    notifyListeners();
+    return false;
   }
 }

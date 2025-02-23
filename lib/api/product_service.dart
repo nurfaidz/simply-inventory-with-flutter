@@ -8,25 +8,27 @@ class ProductService {
     try {
       final response = await _dio.get('/products',
           options: Options(headers: {
-            'Authorization' : 'Bearer $token',
+            'Authorization': 'Bearer $token',
           }));
 
       if (response.statusCode == 200) {
         print("Data products: ${response.data}");
         return response.data;
       }
-    } catch(e) {
+    } catch (e) {
       print("Error fetching products: $e");
     }
 
     return [];
   }
 
-  Future<Map<String, dynamic>?> getProductById(String token, String productId) async {
+  Future<Map<String, dynamic>?> getProductById(
+      String token, String productId) async {
     try {
-      final response = await _dio.get('/products/$productId', options: Options(headers: {
-        'Authorization' : 'Bearer $token',
-      }));
+      final response = await _dio.get('/products/$productId',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }));
 
       if (response.statusCode == 200) {
         print("Data product: ${response.data}");
@@ -42,9 +44,11 @@ class ProductService {
   Future<Response> createProduct(
       String token, Map<String, dynamic> productData) async {
     try {
-      return await _dio.post('/products/', data: productData, options: Options(headers: {
-        'Authorization' : 'Bearer $token',
-      }));
+      return await _dio.post('/products/',
+          data: productData,
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }));
     } catch (e) {
       print("Error adding product: $e");
     }
@@ -55,17 +59,29 @@ class ProductService {
   Future<Response> updateProduct(
       String token, String productId, Map<String, dynamic> productData) async {
     try {
-      return await _dio.put('/products/$productId', data: productData, options: Options(headers: {
-        'Authorization' : 'Bearer $token',
-      }));
+      return await _dio.put('/products/$productId',
+          data: productData,
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }));
     } catch (e) {
       print("Error updating product: $e");
-      return Response(requestOptions: RequestOptions(path: ''), statusCode: 500);
+      return Response(
+          requestOptions: RequestOptions(path: ''), statusCode: 500);
     }
   }
 
   Future<Response> deleteProduct(String token, String productId) async {
-    return await _dio.delete('/products/$productId',
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+    try {
+      final response = _dio.delete('/products/$productId',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+            'Content-Type': 'application/json',
+          }));
+
+      return response;
+    } on DioException catch (e) {
+      return e.response ?? Response(requestOptions: RequestOptions(path: ''));
+    }
   }
 }

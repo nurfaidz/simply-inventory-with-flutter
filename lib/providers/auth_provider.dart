@@ -43,4 +43,16 @@ class AuthProvider with ChangeNotifier{
 
     return false;
   }
+
+  Future<bool> profile() async {
+    Map<String, dynamic>? response = await _authService.getUser();
+
+    if (response != null) {
+      _user = response['user'];
+      notifyListeners();
+      return true;
+    }
+
+    return false;
+  }
 }

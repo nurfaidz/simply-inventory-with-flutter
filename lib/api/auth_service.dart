@@ -8,9 +8,9 @@ class AuthService {
   Future<bool> register(String username, String email, String password) async {
     try {
       Response response = await _dio.post('/users/register', data: {
-        'username' : username,
-        'email' : email,
-        'password' : password,
+        'username': username,
+        'email': email,
+        'password': password,
       });
 
       if (response.statusCode == 201) {
@@ -26,8 +26,8 @@ class AuthService {
   Future<Map<String, dynamic>?> login(String email, String password) async {
     try {
       Response response = await _dio.post('/users/login', data: {
-        'email' : email,
-        'password' : password,
+        'email': email,
+        'password': password,
       });
 
       if (response.statusCode == 200) {
@@ -35,8 +35,8 @@ class AuthService {
         await prefs.setString('token', response.data['token']);
 
         return {
-          'token' : response.data['token'],
-          'user' : response.data['user'],
+          'token': response.data['token'],
+          'user': response.data['user'],
         };
       }
     } on DioException catch (e) {
@@ -59,11 +59,10 @@ class AuthService {
         return false;
       }
 
-      Response response = await _dio.post('/users/logout', options: Options(
-        headers: {
-          'Authorization' : 'Bearer $token',
-        }
-      ));
+      Response response = await _dio.post('/users/logout',
+          options: Options(headers: {
+            'Authorization': 'Bearer $token',
+          }));
 
       if (response.statusCode == 200) {
         await prefs.remove('token');
@@ -72,8 +71,33 @@ class AuthService {
 
       return false;
     } catch (e) {
-        print("Logout error: $e");
-        return false;
+      print("Logout error: $e");
+      return false;
     }
+  }
+
+  Future<Map<String, dynamic>?> getUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('token');
+
+      final response = await _dio.get('/users/profile',
+          options: Options(
+            headers: {
+              'Authorization': 'Bearer $token',
+              'Content-Type': 'application/json',
+            },
+          ));
+
+      if (response.statusCode == 200) {
+        return {
+          'user': response.data,
+        };
+      }
+    } on DioException catch (e) {
+      print("Get user error: ${e.response?.data}");
+    }
+
+    return null;
   }
 }

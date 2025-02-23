@@ -104,7 +104,7 @@ class ProductDetailPage extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () => _showDeleteDialog(context),
+                        onPressed: () => _showDeleteDialog(context, token, productId),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent,
                           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -126,7 +126,7 @@ class ProductDetailPage extends StatelessWidget {
   }
 }
 
-void _showDeleteDialog(BuildContext context) {
+void _showDeleteDialog(BuildContext context, String token, String productId) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
@@ -138,17 +138,33 @@ void _showDeleteDialog(BuildContext context) {
           onPressed: () => Navigator.pop(context),
           child: const Text('Batal'),
         ),
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Produk telah dihapus'),
-              ),
+        Consumer<ProductProvider>(
+          builder: (context, productProvider, child) {
+            return TextButton(
+              onPressed: productProvider.isLoading
+              ? null
+              : () async {
+                Navigator.pop(context);
+
+                  bool success = await productProvider.deleteProduct(token, productId);
+
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Produk telah dihapus')),
+                    );
+                    Navigator.pop(context);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(productProvider.errorMessage ?? 'Gagal menghapus produk. Silakan coba lagi')),
+                    );
+                  }
+              },
+              child: productProvider.isLoading
+              ? const CircularProgressIndicator()
+              : const Text('Hapus', style: TextStyle(color: Colors.red)),
             );
           },
-          child: const Text('Hapus', style: TextStyle(color: Colors.red)),
-        ),
+        )
       ],
     ),
   );
